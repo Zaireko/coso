@@ -68,4 +68,8 @@ public class EmpleadoBean implements Serializable {
         empleadoDAO.deleteEmpleado(id);
         empleados = empleadoDAO.getAllEmpleados(); // Actualizar la lista
     }
+    public void prepareUpdate(Empleado empleado) {
+    this.empleado = empleado;
+}
+
 }

@@ -11,13 +11,13 @@
     <h:body>
 
         <f:view>
-            <h:form>
+            <h:form id="mainForm">
                 <h2>Gestión de Empleados</h2>
                 
                 <!-- Growl para mensajes -->
                 <p:growl id="mimsg" showDetail="true" />
 
-                <!-- Campos para agregar o actualizar empleado -->
+                <!-- Campos para agregar empleado -->
                 <p:panel header="Empleado">
                     <p:outputLabel for="nombre" value="Nombre:" />
                     <p:inputText id="nombre" value="#{empleado.empleado.nombre}" />
@@ -31,9 +31,8 @@
                     <p:inputText id="telefono" value="#{empleado.empleado.telefono}" />
                     <br/>
 
-                    <!-- Botón para agregar o actualizar empleado -->
+                    <!-- Botón para agregar empleado -->
                     <p:commandButton id="btoGuardar" value="Guardar" actionListener="#{empleado.addEmpleado}" update="mimsg, empleadosTable" />
-                    <p:commandButton id="btoActualizar" value="Actualizar" actionListener="#{empleado.updateEmpleado}" update="mimsg, empleadosTable" />
                 </p:panel>
 
                 <!-- Tabla de empleados -->
@@ -51,11 +50,34 @@
                         #{emp.telefono}
                     </p:column>
                     <p:column headerText="Acciones">
+                        <!-- Botón para abrir el diálogo de actualización de empleado -->
+                        <p:commandButton value="Actualizar" oncomplete="PF('dlgActualizar').show()" actionListener="#{empleado.prepareUpdate(emp)}" update="updateForm" process="@this" />
+                        
                         <!-- Botón para eliminar empleado -->
                         <p:commandButton value="Eliminar" actionListener="#{empleado.deleteEmpleado(emp.id)}" update="mimsg, empleadosTable" />
                     </p:column>
                 </p:dataTable>
             </h:form>
+
+            <!-- Diálogo para actualizar empleado -->
+            <p:dialog id="dialogActualizar" header="Actualizar Empleado" widgetVar="dlgActualizar" modal="true" closable="true" draggable="false" resizable="false" showEffect="fade" hideEffect="fade">
+                <h:form id="updateForm">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel for="updateNombre" value="Nombre:" />
+                        <p:inputText id="updateNombre" value="#{empleado.empleado.nombre}" />
+
+                        <p:outputLabel for="updateDireccion" value="Dirección:" />
+                        <p:inputText id="updateDireccion" value="#{empleado.empleado.direccion}" />
+
+                        <p:outputLabel for="updateTelefono" value="Teléfono:" />
+                        <p:inputText id="updateTelefono" value="#{empleado.empleado.telefono}" />
+                    </p:panelGrid>
+
+                    <!-- Botón para guardar los cambios del empleado actualizado -->
+                    <p:commandButton id="btoActualizar" value="Guardar Cambios" actionListener="#{empleado.updateEmpleado}" update=":mainForm:mimsg, :mainForm:empleadosTable" oncomplete="PF('dlgActualizar').hide()" process="@form" />
+                </h:form>
+            </p:dialog>
+
         </f:view>
 
     </h:body>

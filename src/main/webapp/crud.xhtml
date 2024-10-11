@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>CRUD de Empleados</title>
+    </h:head>
+    <h:body>
+
+        <f:view>
+            <h:form>
+                <h2>Gestión de Empleados</h2>
+                
+                <!-- Growl para mensajes -->
+                <p:growl id="mimsg" showDetail="true" />
+
+                <!-- Campos para agregar o actualizar empleado -->
+                <p:panel header="Empleado">
+                    <p:outputLabel for="nombre" value="Nombre:" />
+                    <p:inputText id="nombre" value="#{empleado.empleado.nombre}" />
+                    <br/>
+
+                    <p:outputLabel for="direccion" value="Dirección:" />
+                    <p:inputText id="direccion" value="#{empleado.empleado.direccion}" />
+                    <br/>
+
+                    <p:outputLabel for="telefono" value="Teléfono:" />
+                    <p:inputText id="telefono" value="#{empleado.empleado.telefono}" />
+                    <br/>
+
+                    <!-- Botón para agregar o actualizar empleado -->
+                    <p:commandButton id="btoGuardar" value="Guardar" actionListener="#{empleado.addEmpleado}" update="mimsg, empleadosTable" />
+                    <p:commandButton id="btoActualizar" value="Actualizar" actionListener="#{empleado.updateEmpleado}" update="mimsg, empleadosTable" />
+                </p:panel>
+
+                <!-- Tabla de empleados -->
+                <p:dataTable id="empleadosTable" value="#{empleado.empleados}" var="emp" style="margin-top:20px">
+                    <p:column headerText="ID">
+                        #{emp.id}
+                    </p:column>
+                    <p:column headerText="Nombre">
+                        #{emp.nombre}
+                    </p:column>
+                    <p:column headerText="Dirección">
+                        #{emp.direccion}
+                    </p:column>
+                    <p:column headerText="Teléfono">
+                        #{emp.telefono}
+                    </p:column>
+                    <p:column headerText="Acciones">
+                        <!-- Botón para eliminar empleado -->
+                        <p:commandButton value="Eliminar" actionListener="#{empleado.deleteEmpleado(emp.id)}" update="mimsg, empleadosTable" />
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </f:view>
+
+    </h:body>
+</html>
